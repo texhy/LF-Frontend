@@ -17,7 +17,7 @@ function UserForm({ onSubmit }) {
 
   return (
     <div style={{ maxWidth: '400px', margin: '100px auto', padding: '20px' }}>
-      <h2>LifeGuard-Pro Assistant</h2>
+      <h2>Test Chatbot</h2>
       <p>Please provide your information:</p>
       
       <form onSubmit={handleSubmit}>

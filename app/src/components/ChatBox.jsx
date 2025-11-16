@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../services/api';
+import MessageContent from './MessageContent';
 
 function ChatBox({ sessionId, sessionStatus, userName }) {
   const [messages, setMessages] = useState([]);
@@ -11,7 +12,7 @@ function ChatBox({ sessionId, sessionStatus, userName }) {
     // Add welcome message
     const welcomeMsg = sessionStatus === 'returning_user'
       ? `Welcome back, ${userName}! I remember our previous conversations. How can I help you today?`
-      : `Welcome, ${userName}! I'm your LifeGuard-Pro assistant. How can I help you today?`;
+      : `Welcome, ${userName}! I'm your Test Chatbot assistant. How can I help you today?`;
     
     setMessages([{
       type: 'bot',
@@ -77,7 +78,7 @@ function ChatBox({ sessionId, sessionStatus, userName }) {
     <div style={{ maxWidth: '800px', margin: '0 auto', height: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
       <div style={{ background: '#0066cc', color: 'white', padding: '15px 20px' }}>
-        <h3 style={{ margin: 0 }}>LifeGuard-Pro Assistant</h3>
+        <h3 style={{ margin: 0 }}>Test Chatbot</h3>
         <small>
           User: {userName} | 
           {sessionStatus === 'returning_user' && ' 🔄 Returning User'} |
@@ -100,7 +101,13 @@ function ChatBox({ sessionId, sessionStatus, userName }) {
       </div>
 
       {/* Messages */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px', background: '#f5f5f5' }}>
+      <div style={{ 
+        flex: 1, 
+        overflowY: 'auto', 
+        padding: '20px', 
+        background: '#f5f5f5',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+      }}>
         {messages.map((msg, idx) => (
           <div key={idx} style={{
             marginBottom: '15px',
@@ -109,19 +116,38 @@ function ChatBox({ sessionId, sessionStatus, userName }) {
           }}>
             <div style={{
               maxWidth: '70%',
-              padding: '10px 15px',
+              padding: '14px 18px',
               background: msg.type === 'user' ? '#0066cc' : 'white',
-              color: msg.type === 'user' ? 'white' : 'black',
-              borderRadius: '10px',
-              boxShadow: '0 1px 2px rgba(0,0,0,0.1)'
+              color: msg.type === 'user' ? 'white' : '#333',
+              borderRadius: '12px',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              lineHeight: '1.6',
+              fontSize: '14px'
             }}>
-              <div>{msg.content}</div>
+              {msg.type === 'bot' ? (
+                <MessageContent content={msg.content} />
+              ) : (
+                <div style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                  {msg.content}
+                </div>
+              )}
               {msg.toolCalls && msg.toolCalls.length > 0 && (
-                <div style={{ fontSize: '11px', marginTop: '5px', opacity: 0.8 }}>
+                <div style={{ 
+                  fontSize: '11px', 
+                  marginTop: '8px', 
+                  paddingTop: '8px',
+                  borderTop: msg.type === 'user' ? '1px solid rgba(255,255,255,0.3)' : '1px solid #eee',
+                  opacity: 0.8 
+                }}>
                   🔧 Tools: {msg.toolCalls.join(', ')}
                 </div>
               )}
-              <div style={{ fontSize: '10px', marginTop: '5px', opacity: 0.6 }}>
+              <div style={{ 
+                fontSize: '10px', 
+                marginTop: '8px', 
+                opacity: 0.6,
+                display: 'block'
+              }}>
                 {msg.timestamp.toLocaleTimeString()}
               </div>
             </div>
