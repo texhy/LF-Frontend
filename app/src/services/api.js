@@ -26,6 +26,16 @@ const api = {
   endSession: async (sessionId) => {
     const response = await axios.post(`${API_BASE}/api/v1/session/${sessionId}/end`);
     return response.data;
+  },
+
+  // Email classification and reply generation
+  classifyEmail: async (subject, text, fromEmail) => {
+    const response = await axios.post(`${API_BASE}/api/email/test-process`, {
+      subject: subject,
+      text: text,
+      from_email: fromEmail || null
+    });
+    return response.data;
   }
 };
 
